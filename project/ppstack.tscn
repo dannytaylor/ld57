@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmgu2bk0a5dko"]
+
+[ext_resource type="Shader" uid="uid://cobbbcppkodjt" path="res://assets/materials/canvas_dither.gdshader" id="1_6kmxj"]
+[ext_resource type="PackedScene" uid="uid://c24cvv5k15c3l" path="res://main.tscn" id="1_rfwko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qo64l"]
+shader = ExtResource("1_6kmxj")
+shader_parameter/fog_color = Color(0, 0, 0, 1)
+shader_parameter/resolution_downsampling = 1.0
+shader_parameter/bit_depth = 0.0
+
+[node name="root" type="Node"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer"]
+size = Vector2i(920, 640)
+size_2d_override = Vector2i(920, 640)
+size_2d_override_stretch = true
+
+[node name="Dither" type="SubViewportContainer" parent="CanvasLayer/SubViewport"]
+material = SubResource("ShaderMaterial_qo64l")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewport/Dither"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
+size = Vector2i(920, 640)
+size_2d_override = Vector2i(920, 640)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Main" parent="CanvasLayer/SubViewport/Dither/SubViewport" instance=ExtResource("1_rfwko")]

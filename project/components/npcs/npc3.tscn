@@ -1,0 +1,187 @@
+[gd_scene load_steps=13 format=3 uid="uid://d1ohcn0upatyk"]
+
+[ext_resource type="Script" uid="uid://djtlt6xhuavc3" path="res://components/npcs/npc_2.gd" id="1_tgbtl"]
+[ext_resource type="FontFile" uid="uid://b12dw7f4ciby8" path="res://assets/2d/honeyblot_caps.ttf" id="2_5o3t5"]
+[ext_resource type="Texture2D" uid="uid://4rjf8pd3lauw" path="res://components/npcs/npc0002.png" id="2_egb8o"]
+[ext_resource type="Texture2D" uid="uid://cj07ca2ssf2we" path="res://components/npcs/npc0003.png" id="3_bftxg"]
+[ext_resource type="AudioStream" uid="uid://c0swn0hyttwch" path="res://components/npcs/chatClick.wav" id="3_egb8o"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4sv82"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3y25d"]
+size = Vector3(2.53168, 1.56195, 2.52234)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4sv82"]
+size = Vector3(1.15576, 8.81793, 1.29356)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_428k2"]
+bg_color = Color(0.268727, 0.583952, 0.491464, 0.25098)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_428k2"]
+font = ExtResource("2_5o3t5")
+font_size = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6dxk"]
+bg_color = Color(0.219608, 0.34902, 0.701961, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_pf6ww"]
+font = ExtResource("2_5o3t5")
+font_size = 48
+font_color = Color(0.827451, 0.933333, 0.827451, 1)
+
+[node name="npc3" type="Node3D"]
+script = ExtResource("1_tgbtl")
+sprite1 = ExtResource("2_egb8o")
+sprite2 = ExtResource("3_bftxg")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28497, 0)
+pixel_size = 0.0025
+billboard = 2
+alpha_cut = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_4sv82")
+
+[node name="TalkArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TalkArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0992737, 1.19638, 0.761169)
+shape = SubResource("BoxShape3D_3y25d")
+
+[node name="npc_static" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="npc_static"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00170898, 3.90897, 0.117531)
+shape = SubResource("BoxShape3D_4sv82")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="chat1" type="Panel" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -427.0
+offset_top = -228.0
+offset_right = 430.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_428k2")
+
+[node name="chat1" type="Label" parent="UI/chat1"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -441.5
+offset_top = -165.0
+offset_right = 438.5
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "did you see you can depth focus
+ with 'q' and 'e'? maybe you selectively
+ focus on things in frame"
+label_settings = SubResource("LabelSettings_428k2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="progress" type="Panel" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_top = -69.0
+offset_right = 37.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n6dxk")
+
+[node name="progress" type="Label" parent="UI/progress"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = -53.0
+offset_right = 440.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "e"
+label_settings = SubResource("LabelSettings_pf6ww")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="chat2" type="Panel" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -427.0
+offset_top = -228.0
+offset_right = 430.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_428k2")
+
+[node name="chat2" type="Label" parent="UI/chat2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -441.5
+offset_top = -165.0
+offset_right = 438.5
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "or just exclude things in your 
+shots alltogether!"
+label_settings = SubResource("LabelSettings_428k2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="chatAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_egb8o")
+
+[connection signal="body_entered" from="TalkArea" to="." method="_on_talk_area_body_entered"]
+[connection signal="body_exited" from="TalkArea" to="." method="_on_talk_area_body_exited"]

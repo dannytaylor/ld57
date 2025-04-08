@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://c24cvv5k15c3l"]
+
+[ext_resource type="Shader" uid="uid://dfov25u2hn5eg" path="res://assets/materials/sky.gdshader" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://08vmfx5fvcj1" path="res://main.gd" id="1_kek77"]
+[ext_resource type="PackedScene" uid="uid://bgkmxyw21pc1m" path="res://components/player_godot/player.tscn" id="2_h2yge"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lquwl"]
+shader = ExtResource("1_1bvp3")
+shader_parameter/background_dark = false
+
+[sub_resource type="Sky" id="Sky_7mycd"]
+sky_material = SubResource("ShaderMaterial_lquwl")
+
+[sub_resource type="Environment" id="Environment_1bvp3"]
+background_mode = 2
+sky = SubResource("Sky_7mycd")
+ssao_enabled = true
+ssil_enabled = true
+fog_mode = 1
+fog_density = 1.0
+fog_aerial_perspective = 1.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_anisotropy = 0.9
+volumetric_fog_sky_affect = 0.0
+adjustment_brightness = 1.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_1bvp3"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_kek77")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1bvp3")
+
+[node name="sun" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.996196, -0.00936397, -0.0866338, 0.0871384, 0.107052, 0.990427, 0, -0.994209, 0.107461, 0, 6.18771, 0)
+shadow_enabled = true
+shadow_opacity = 0.3
+shadow_blur = 0.1
+directional_shadow_mode = 0
+
+[node name="Player" parent="." instance=ExtResource("2_h2yge")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.1252, 0)
+visible = false
+mesh = SubResource("BoxMesh_1bvp3")

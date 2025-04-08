@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0b71d2b1hdp6"]
+
+[ext_resource type="Script" uid="uid://c46lj0jmqn7io" path="res://components/orbit_control/orbit_view.gd" id="1_hg1yw"]
+[ext_resource type="Shader" uid="uid://g4kus1q4rxb" path="res://assets/materials/quad_outline.gdshader" id="2_8soqh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hejak"]
+render_priority = 0
+shader = ExtResource("2_8soqh")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 0.05
+shader_parameter/normal_threshold = 2.0
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 2.0
+shader_parameter/min_thickness = 1.0
+shader_parameter/max_distance = 64.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_hejak"]
+material = SubResource("ShaderMaterial_hejak")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8soqh"]
+
+[node name="OrbitView" type="SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.209873, 0)
+spring_length = 8.0
+script = ExtResource("1_hg1yw")
+min_limit_x = -1.39626
+max_limit_x = 0.174533
+
+[node name="Camera3D" type="Camera3D" parent="."]
+cull_mask = 1048573
+fov = 50.0
+
+[node name="QuadOutline" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.01177)
+mesh = SubResource("QuadMesh_hejak")
+
+[node name="Mesh Test" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.848002, 0, 0.529993, 0.229486, 0.901395, -0.367183, -0.477733, 0.432998, 0.764384, 0, 0, -2.4421)
+visible = false
+mesh = SubResource("BoxMesh_8soqh")

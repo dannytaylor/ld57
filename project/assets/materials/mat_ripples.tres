@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dpjfsewnf1f4h"]
+
+[ext_resource type="Shader" uid="uid://b88exp8nplqpn" path="res://assets/materials/spatial_ripples.gdshader" id="1_2ka3t"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_2ka3t")
+shader_parameter/frequency = 4.0
+shader_parameter/amplitude = 2.0
+shader_parameter/ripple_rate = 5.0
+shader_parameter/blending = 1.0
+shader_parameter/wave_amplitude = 0.05
+shader_parameter/wave_frequency = 4.0

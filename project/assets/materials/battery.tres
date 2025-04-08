@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://0xki16a5y2h"]
+
+[ext_resource type="Texture2D" uid="uid://cgwm8hlfbjb08" path="res://components/battery/battery_lospec500-8x.png" id="1_28blg"]
+
+[resource]
+resource_name = "battery"
+cull_mode = 2
+albedo_texture = ExtResource("1_28blg")
+metallic = 0.5
+roughness = 0.5

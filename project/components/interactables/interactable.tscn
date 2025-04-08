@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://boj1te0fc6q8"]
+
+[ext_resource type="Script" uid="uid://dlacrxa3v00kf" path="res://components/interactables/interactable.gd" id="1_d6418"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_35n4a"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_d6418"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_0oysh"]
+density = 0.1
+emission = Color(0.22883, 0.63883, 0.916196, 1)
+edge_fade = 0.0615573
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hhshn"]
+
+[node name="Interactable" type="Node3D" groups=["interactable"]]
+script = ExtResource("1_d6418")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 5
+mesh = SubResource("BoxMesh_35n4a")
+
+[node name="MeshZ" type="MeshInstance3D" parent="."]
+layers = 2
+mesh = SubResource("BoxMesh_d6418")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
+
+[node name="FogVolume" type="FogVolume" parent="."]
+visible = false
+size = Vector3(1, 1, 1)
+material = SubResource("FogMaterial_0oysh")
+
+[node name="Area3D" type="Area3D" parent="."]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_hhshn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_hhshn")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

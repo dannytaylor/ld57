@@ -1,0 +1,732 @@
+[gd_scene load_steps=48 format=3 uid="uid://bgkmxyw21pc1m"]
+
+[ext_resource type="Script" uid="uid://de2sqbhiahmo6" path="res://components/player_godot/player.gd" id="1_ms4x1"]
+[ext_resource type="PackedScene" uid="uid://bj1ug1bc7xgd7" path="res://components/godot_plush/godot_plush_skin.tscn" id="2_mtsks"]
+[ext_resource type="PackedScene" uid="uid://c0b71d2b1hdp6" path="res://components/orbit_control/orbit_view.tscn" id="3_hcr6r"]
+[ext_resource type="Shader" uid="uid://5y387mno1duo" path="res://assets/materials/quad_depth.gdshader" id="3_ljuij"]
+[ext_resource type="Shader" uid="uid://dhkgcxxo8ja7b" path="res://components/godot_plush/material/godot_plush.gdshader" id="3_rh4d6"]
+[ext_resource type="Shader" uid="uid://g4kus1q4rxb" path="res://assets/materials/quad_outline.gdshader" id="3_rld3q"]
+[ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://components/godot_plush/material/godot_plush_albedo.png" id="4_dcee2"]
+[ext_resource type="Material" uid="uid://fkuklawrv3wp" path="res://components/player_godot/vfx/dust_mat.tres" id="4_j7qt1"]
+[ext_resource type="AudioStream" uid="uid://b5uvkxcp4sr61" path="res://assets/sounds/footstep_concrete_000.ogg" id="5_8ixl8"]
+[ext_resource type="AudioStream" uid="uid://dufd3x3oyf31g" path="res://assets/sounds/footstep_concrete_001.ogg" id="6_nlp36"]
+[ext_resource type="PackedScene" uid="uid://cell6ptxwb754" path="res://components/player_godot/camera.glb" id="6_qid6b"]
+[ext_resource type="AudioStream" uid="uid://dn1hajfrpyi2i" path="res://assets/sounds/footstep_concrete_002.ogg" id="7_4283i"]
+[ext_resource type="Material" uid="uid://dpjfsewnf1f4h" path="res://assets/materials/mat_ripples.tres" id="8_kn408"]
+[ext_resource type="AudioStream" uid="uid://bn6xngrt7pqkc" path="res://assets/sounds/jingles_SAX15.ogg" id="8_s241m"]
+[ext_resource type="AudioStream" uid="uid://c8ia7mqqyd47o" path="res://assets/sounds/crank.ogg" id="13_8wi6f"]
+[ext_resource type="AudioStream" uid="uid://w5yhimds7tqf" path="res://assets/sounds/shutter.ogg" id="14_rld3q"]
+[ext_resource type="AudioStream" uid="uid://d283qhqa42ywd" path="res://assets/sounds/empty.wav" id="15_rld3q"]
+[ext_resource type="Texture2D" uid="uid://bfkkg1ysj6j0l" path="res://assets/2d/battery.png" id="16_1piu6"]
+[ext_resource type="AudioStream" uid="uid://die0pbj7pq65d" path="res://assets/sounds/jump.wav" id="16_lsf5j"]
+[ext_resource type="AudioStream" uid="uid://c1wm82dfherw" path="res://assets/sounds/in_the_212_0.ogg" id="17_1piu6"]
+[ext_resource type="FontFile" uid="uid://b12dw7f4ciby8" path="res://assets/2d/honeyblot_caps.ttf" id="20_dcee2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv0o5"]
+friction = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wqewt"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_rh4d6")
+shader_parameter/albedo_texture = ExtResource("4_dcee2")
+shader_parameter/uv_offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8pvca"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_rh4d6")
+shader_parameter/albedo_texture = ExtResource("4_dcee2")
+shader_parameter/uv_offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8soqh"]
+render_priority = 0
+shader = ExtResource("3_rld3q")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 0.05
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 2.0
+shader_parameter/min_thickness = 1.0
+shader_parameter/max_distance = 64.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_rld3q"]
+material = SubResource("ShaderMaterial_8soqh")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u51o7"]
+render_priority = 0
+shader = ExtResource("3_ljuij")
+shader_parameter/depth_factor = 64.0
+shader_parameter/depth_dist = 64.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rld3q"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.92549, 0.152941, 0.247059, 1)
+
+[sub_resource type="Animation" id="Animation_1piu6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("camera_dial:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rld3q"]
+resource_name = "dialCCW"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("camera_dial:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lsf5j"]
+resource_name = "dialCW"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("camera_dial:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kn408"]
+_data = {
+&"RESET": SubResource("Animation_1piu6"),
+&"dialCCW": SubResource("Animation_rld3q"),
+&"dialCW": SubResource("Animation_lsf5j")
+}
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xhngq"]
+
+[sub_resource type="Curve" id="Curve_wrw8f"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_yttci"]
+curve = SubResource("Curve_wrw8f")
+
+[sub_resource type="Curve" id="Curve_gyl8p"]
+_data = [Vector2(0, 0.2), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_p3jn6"]
+curve = SubResource("Curve_gyl8p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dhnoe"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 0.25
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0.2, 0)
+scale_curve = SubResource("CurveTexture_p3jn6")
+alpha_curve = SubResource("CurveTexture_yttci")
+anim_speed_min = 0.01
+anim_speed_max = 0.03
+anim_offset_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_bw4i7"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eda2r"]
+lifetime_randomness = 0.41
+emission_shape = 3
+emission_box_extents = Vector3(0.5, 0.1, 0.5)
+gravity = Vector3(0, 1, 0)
+scale_min = 0.5
+scale_max = 1.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_rh4d6"]
+material = ExtResource("8_kn408")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sxclc"]
+random_pitch = 1.2
+streams_count = 3
+stream_0/stream = ExtResource("5_8ixl8")
+stream_1/stream = ExtResource("6_nlp36")
+stream_2/stream = ExtResource("7_4283i")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3vpnr"]
+random_pitch = 1.2
+streams_count = 3
+stream_0/stream = ExtResource("5_8ixl8")
+stream_1/stream = ExtResource("6_nlp36")
+stream_2/stream = ExtResource("7_4283i")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fvg16"]
+random_pitch = 1.2
+streams_count = 1
+stream_0/stream = ExtResource("8_s241m")
+
+[sub_resource type="LabelSettings" id="LabelSettings_wqewt"]
+font = ExtResource("20_dcee2")
+font_size = 92
+
+[sub_resource type="LabelSettings" id="LabelSettings_8pvca"]
+font = ExtResource("20_dcee2")
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_gs5xy"]
+font = ExtResource("20_dcee2")
+font_size = 48
+font_color = Color(0.662453, 0.662452, 0.662452, 1)
+
+[node name="Player" type="RigidBody3D" groups=["player"]]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_bv0o5")
+can_sleep = false
+lock_rotation = true
+custom_integrator = true
+contact_monitor = true
+max_contacts_reported = 8
+script = ExtResource("1_ms4x1")
+jump_height = 3.0
+
+[node name="VisualRoot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="GodotPlushSkin" parent="VisualRoot" instance=ExtResource("2_mtsks")]
+
+[node name="Skeleton3D" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig" index="0"]
+bones/0/position = Vector3(0, 0.779422, 0)
+bones/0/rotation = Quaternion(0.999951, 0.00696494, 0.00698134, 4.43164e-05)
+bones/1/position = Vector3(-1.71927e-16, 5.96046e-08, -2.60627e-15)
+bones/1/rotation = Quaternion(1, 7.30348e-17, 9.92095e-10, -4.37114e-08)
+bones/2/rotation = Quaternion(-0.0483801, 0.111343, 0.93271, -0.339581)
+bones/3/rotation = Quaternion(0.304565, -0.0205159, 0.00656055, 0.952248)
+bones/5/rotation = Quaternion(-0.100483, -0.177977, 0.920709, 0.332449)
+bones/6/rotation = Quaternion(0.0929259, -0.0214464, 0.00200321, 0.99544)
+bones/8/rotation = Quaternion(-0.0399168, -0.0029821, -0.042423, 0.998298)
+bones/9/position = Vector3(7.66498e-09, 0.152419, -6.38411e-09)
+bones/9/rotation = Quaternion(0.225504, -0.203258, 0.0481429, 0.951586)
+bones/10/position = Vector3(4.04613e-08, 0.206255, 1.36634e-08)
+bones/10/rotation = Quaternion(-0.55724, -0.016964, 0.025423, 0.829789)
+bones/11/position = Vector3(-1.68542e-08, 0.251212, 8.87024e-12)
+bones/11/rotation = Quaternion(-9.78975e-05, 0.932472, -0.361242, 4.4434e-05)
+bones/12/rotation = Quaternion(-0.0762596, 0.00532399, 0.0815538, 0.993733)
+bones/13/position = Vector3(-2.9951e-08, 0.151937, -2.593e-09)
+bones/13/rotation = Quaternion(0.278449, 0.193934, -0.0575276, 0.938907)
+bones/14/position = Vector3(-1.41103e-08, 0.205753, -5.6742e-09)
+bones/14/rotation = Quaternion(-0.56754, 0.00646546, -0.037108, 0.822484)
+bones/15/position = Vector3(-3.50115e-08, 0.251207, -3.33558e-08)
+bones/15/rotation = Quaternion(-2.7382e-05, 0.932465, -0.361261, 0.000277764)
+
+[node name="GodotPlushMesh" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D" index="0"]
+surface_material_override/1 = SubResource("ShaderMaterial_wqewt")
+surface_material_override/2 = SubResource("ShaderMaterial_8pvca")
+
+[node name="Physical Bone DEF-hips" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="0"]
+transform = Transform3D(0.986857, -0.00889198, 0.161353, -0.00901056, -0.999959, 3.18436e-06, 0.161346, -0.00145702, -0.986897, 0, 0.774797, 0)
+body_offset = Transform3D(1, -2.96859e-08, 5.66244e-07, 2.85363e-08, 1, 2.56114e-09, -5.66244e-07, -2.44472e-09, 1, 0, 0, 0)
+
+[node name="Physical Bone DEF-upper_arm_L" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="1"]
+transform = Transform3D(-0.753218, -0.362153, -0.549097, -0.641409, 0.219359, 0.73517, -0.145795, 0.90594, -0.397514, 0.556756, 0.734775, 0.11532)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.36364e-06, 1.08791e-07, 0.0789522)
+body_offset = Transform3D(0.997809, -3.8594e-06, 3.64706e-05, 3.66755e-05, 1.71661e-05, -1.0044, 3.8147e-06, 0.997809, 1.68383e-05, 4.76837e-07, 0.0792993, -1.43796e-06)
+
+[node name="Physical Bone DEF-forearm_L" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="2"]
+transform = Transform3D(-0.771027, -0.53683, -0.342536, -0.629139, 0.558962, 0.540135, -0.0984958, 0.631961, -0.768715, 0.623253, 0.640135, 0.199331)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1367e-06, -0.000366559, 0.0681644)
+body_offset = Transform3D(0.996762, -3.83705e-07, 3.18065e-05, 3.23281e-05, -3.8147e-06, -1.00825, 3.72529e-08, 0.995021, 0.00531691, -8.28505e-06, 0.0687265, 2.30968e-06)
+
+[node name="Physical Bone DEF-upper_arm_R" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="3"]
+transform = Transform3D(-0.726511, -0.488728, 0.483039, 0.659447, -0.29828, 0.690043, -0.193162, 0.819862, 0.538994, -0.551038, 0.747859, -0.126319)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.44515e-06, 8.20792e-07, 0.0787422)
+body_offset = Transform3D(0.996376, 7.46548e-06, -5.61103e-05, -5.67064e-05, 1.25766e-05, -1.00729, -7.55489e-06, 0.996377, 1.26064e-05, 6.85453e-06, 0.079316, -1.81049e-06)
+
+[node name="Physical Bone DEF-forearm_R" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="4"]
+transform = Transform3D(-0.750927, -0.270981, 0.602227, 0.643059, -0.0925256, 0.760207, -0.15028, 0.958127, 0.243737, -0.629862, 0.642131, -0.184765)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.91019e-06, -0.000453511, 0.0675799)
+body_offset = Transform3D(0.994649, -7.56979e-06, -5.52312e-05, -5.67138e-05, 1.40071e-06, -1.01693, 7.97212e-06, 0.988587, 0.00661629, 8.34465e-07, 0.0687242, 1.20699e-06)
+
+[node name="Physical Bone DEF-thigh_L" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="5"]
+transform = Transform3D(0.983679, 0.15541, -0.0906872, 0.0969914, -0.0334577, 0.994723, 0.151556, -0.987283, -0.0479851, 0.189486, 0.438288, 0.0271916)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04558e-06, 3.33451e-07, 0.0752311)
+body_offset = Transform3D(0.98933, -1.78814e-06, -6.10296e-06, -6.30412e-06, 4.05684e-06, -1.02169, 1.77324e-06, 0.989331, 3.93391e-06, -1.56462e-06, 0.0768626, -6.25849e-07)
+
+[node name="Physical Bone DEF-shin_L" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="6"]
+transform = Transform3D(0.963378, -0.264336, 0.0450555, 0.0754526, 0.42846, 0.900405, -0.257314, -0.86403, 0.432714, 0.190994, 0.277322, -0.0143685)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.46116e-06, -0.00276548, 0.0986906)
+body_offset = Transform3D(0.985222, -1.06543e-05, 1.16974e-06, -7.45058e-07, -2.74181e-06, -1.05171, 1.15335e-05, 0.964902, 0.0270244, 2.27988e-06, 0.103794, 1.36346e-06)
+
+[node name="Physical Bone DEF-foot_L" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="7"]
+transform = Transform3D(0.905828, -0.290826, -0.308053, 0.00833731, -0.714768, 0.699312, -0.423564, -0.636024, -0.645032, 0.226861, 0.106999, 0.0310982)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00165102, 0.00900983, 0.129331)
+body_offset = Transform3D(0.996501, 0.0114643, -0.0135212, 8.9407e-07, 2.89083e-06, -0.971398, 7.09295e-06, 1.0317, -0.0718572, 1.78814e-07, 0.125632, -2.04146e-06)
+
+[node name="Physical Bone DEF-thigh_R" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="8"]
+transform = Transform3D(0.968383, 0.142963, 0.204439, -0.162261, -0.261507, 0.951465, 0.189486, -0.954555, -0.230042, -0.201151, 0.442651, -0.0187265)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36598e-06, -3.07395e-07, 0.0775962)
+body_offset = Transform3D(1.00475, 7.00355e-07, 2.32458e-06, 2.32458e-06, 4.08292e-06, -0.990559, -7.30157e-07, 1.00475, 4.17233e-06, 1.19209e-06, 0.0768637, -1.49012e-08)
+
+[node name="Physical Bone DEF-shin_R" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="9"]
+transform = Transform3D(0.827787, 0.540881, -0.149053, -0.042589, 0.325484, 0.944588, 0.559424, -0.775569, 0.292467, -0.201767, 0.271446, -0.030851)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05456e-06, 0.00142233, 0.104655)
+body_offset = Transform3D(1.0066, 7.24196e-06, -4.91738e-07, -1.49012e-07, -2.98023e-08, -0.991745, -7.77841e-06, 1.00171, -0.0136134, 1.10269e-06, 0.103791, -3.91155e-08)
+
+[node name="Physical Bone DEF-foot_R" parent="VisualRoot/GodotPlushSkin/GodotPlushModel/Rig/Skeleton3D/PhysicalBoneSimulator3D" index="10"]
+transform = Transform3D(0.906403, 0.282885, 0.313705, 0.00134712, -0.744578, 0.667534, 0.422413, -0.604632, -0.675268, -0.226011, 0.0893018, 0.0230984)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000258069, -0.00207511, 0.124734)
+body_offset = Transform3D(1.00049, 0.00120488, -0.00204968, -3.57628e-07, 5.66244e-07, -1.00722, -4.23193e-06, 0.99232, 0.0165044, -2.98023e-08, 0.125635, 5.06639e-07)
+
+[node name="Skeleton3D" parent="VisualRoot/GodotPlushSkin/player2/Rig" index="0"]
+bones/1/position = Vector3(-3.38045e-15, 0.0884898, 1.71926)
+bones/1/rotation = Quaternion(0.790455, 4.35221e-15, -5.61652e-15, 0.61252)
+bones/2/rotation = Quaternion(-0.0217992, 1.191e-07, -6.31124e-09, 0.999762)
+bones/3/rotation = Quaternion(-0.119931, -0.0183737, 0.0010431, 0.992612)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(0.0016467, -0.0559926, -0.00109711, 0.998429)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.201596, 0.0367892, -0.00648822, 0.978756)
+bones/6/rotation = Quaternion(-0.094857, 2.86302e-09, -2.52618e-08, 0.995491)
+bones/7/rotation = Quaternion(-0.0936467, 0.0371925, -0.0035008, 0.994904)
+bones/8/position = Vector3(0.849878, 0.23949, 1.97046)
+bones/8/rotation = Quaternion(0.365673, 0.799251, 0.115415, 0.462775)
+bones/8/scale = Vector3(1, 25.9605, 1)
+bones/9/position = Vector3(-0.839731, 0.305467, 1.92411)
+bones/9/rotation = Quaternion(-0.226907, 0.754981, 0.153365, -0.595816)
+bones/9/scale = Vector3(1, 28.8065, 1)
+bones/10/position = Vector3(0.323281, 0.00424342, 1.03496)
+bones/10/rotation = Quaternion(0.999976, -1.06695e-08, 1.06695e-08, -0.00699666)
+bones/10/scale = Vector3(1, 25.1162, 1)
+bones/11/position = Vector3(-0.323281, 0.00424342, 1.03496)
+bones/11/rotation = Quaternion(0.999976, 1.06695e-08, -1.06695e-08, -0.00699666)
+bones/11/scale = Vector3(1, 25.1162, 1)
+bones/13/position = Vector3(0, -0.000593199, -0.00136434)
+bones/15/rotation = Quaternion(0, 0, -0.0746617, 0.997209)
+bones/18/position = Vector3(2.38043e-15, -0.130854, -8.55782e-09)
+bones/18/rotation = Quaternion(-0.776915, -7.50548e-08, -9.26155e-08, 0.629605)
+bones/22/rotation = Quaternion(0.28664, 0.721067, 0.388165, -0.497221)
+bones/26/rotation = Quaternion(0.99079, 2.7328e-08, 1.18158e-07, 0.135407)
+bones/26/scale = Vector3(1.00085, 1.00085, 1.00085)
+bones/27/rotation = Quaternion(0.16367, -1.17602e-07, 1.9511e-08, 0.986515)
+bones/27/scale = Vector3(1.00022, 1.00022, 1.00022)
+bones/28/rotation = Quaternion(-0.422616, 0.000191512, -8.92933e-05, 0.906309)
+bones/28/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/29/position = Vector3(-1.61341e-07, 0.370208, 0.000208402)
+bones/29/rotation = Quaternion(0.000102051, 0.875751, -0.482763, 0.000184991)
+bones/33/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/35/rotation = Quaternion(-7.56121e-09, 0.000100533, 1.09896e-08, 1)
+bones/35/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/37/scale = Vector3(0.999156, 0.999156, 0.999156)
+bones/38/rotation = Quaternion(-3.80487e-07, -1.17686e-07, -2.69023e-08, 1)
+bones/38/scale = Vector3(0.999156, 0.999156, 0.999156)
+bones/40/rotation = Quaternion(0.99079, -2.7328e-08, -1.18158e-07, 0.135407)
+bones/40/scale = Vector3(1.00085, 1.00085, 1.00085)
+bones/41/rotation = Quaternion(0.16367, 1.17602e-07, -1.9511e-08, 0.986515)
+bones/41/scale = Vector3(1.00022, 1.00022, 1.00022)
+bones/42/rotation = Quaternion(-0.422616, -0.000191512, 8.92934e-05, 0.906309)
+bones/42/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/43/position = Vector3(1.61338e-07, 0.370208, 0.000208402)
+bones/43/rotation = Quaternion(-0.000102051, 0.875751, -0.482763, -0.000184991)
+bones/47/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/49/rotation = Quaternion(-1.50256e-08, -0.000100533, -1.09913e-08, 1)
+bones/49/scale = Vector3(0.998451, 0.998451, 0.998451)
+bones/51/scale = Vector3(0.999156, 0.999156, 0.999156)
+bones/52/rotation = Quaternion(-3.80487e-07, 1.17686e-07, 2.69023e-08, 1)
+bones/52/scale = Vector3(0.999156, 0.999156, 0.999156)
+bones/62/rotation = Quaternion(-0.66384, 8.91536e-08, -7.91359e-08, 0.747875)
+bones/63/rotation = Quaternion(-0.0686481, 7.96343e-10, -2.75249e-08, 0.997641)
+bones/63/scale = Vector3(1.00085, 1.00085, 1.00085)
+bones/64/rotation = Quaternion(0.16367, -1.17602e-07, 1.9511e-08, 0.986515)
+bones/64/scale = Vector3(1.00022, 1.00022, 1.00022)
+bones/65/rotation = Quaternion(0.99079, 3.48052e-08, 1.14427e-07, 0.135407)
+bones/67/rotation = Quaternion(0.99079, 1.59897e-08, 1.16998e-07, 0.135407)
+bones/67/scale = Vector3(0.999578, 1.00085, 0.999578)
+bones/68/rotation = Quaternion(4.19096e-09, 4.19921e-09, -3.79731e-08, 1)
+bones/68/scale = Vector3(1, 1, 1)
+bones/69/rotation = Quaternion(0.16367, -1.14753e-07, 4.63063e-08, 0.986515)
+bones/69/scale = Vector3(0.999889, 1.00029, 0.99982)
+bones/70/rotation = Quaternion(-4.47035e-08, -7.43126e-07, 1.0981e-08, 1)
+bones/71/rotation = Quaternion(-0.422411, 0.000192293, -8.88721e-05, 0.906405)
+bones/71/scale = Vector3(1.00024, 1.0002, 0.999567)
+bones/72/rotation = Quaternion(0.000102138, 0.875615, -0.48301, 0.000184943)
+bones/72/scale = Vector3(1.00033, 1.00005, 0.999623)
+bones/79/rotation = Quaternion(-0.000102071, 0.875751, -0.482764, -0.000184954)
+bones/81/rotation = Quaternion(-0.66384, -8.91536e-08, 7.91359e-08, 0.747875)
+bones/82/rotation = Quaternion(-0.0686481, -7.96335e-10, 2.75249e-08, 0.997641)
+bones/82/scale = Vector3(1.00085, 1.00085, 1.00085)
+bones/83/rotation = Quaternion(0.16367, 1.17602e-07, -1.9511e-08, 0.986515)
+bones/83/scale = Vector3(1.00022, 1.00022, 1.00022)
+bones/84/rotation = Quaternion(0.99079, -3.48052e-08, -1.14427e-07, 0.135407)
+bones/86/rotation = Quaternion(0.99079, -1.59897e-08, -1.16998e-07, 0.135407)
+bones/86/scale = Vector3(0.999578, 1.00085, 0.999578)
+bones/87/rotation = Quaternion(4.19096e-09, -4.1992e-09, 3.79731e-08, 1)
+bones/87/scale = Vector3(1, 1, 1)
+bones/88/rotation = Quaternion(0.16367, 1.14753e-07, -4.63063e-08, 0.986515)
+bones/88/scale = Vector3(0.999889, 1.00029, 0.99982)
+bones/89/rotation = Quaternion(-2.98023e-08, 7.43081e-07, -1.09847e-08, 1)
+bones/90/rotation = Quaternion(-0.42241, -0.000192293, 8.88721e-05, 0.906405)
+bones/90/scale = Vector3(1.00024, 1.0002, 0.999567)
+bones/91/rotation = Quaternion(-0.000102138, 0.875615, -0.48301, -0.000184943)
+bones/91/scale = Vector3(1.00033, 1.00005, 0.999623)
+bones/95/rotation = Quaternion(0, 0, -0.0373569, 0.999302)
+bones/96/rotation = Quaternion(0.695768, -1.33788e-09, -1.29597e-09, 0.718266)
+bones/97/position = Vector3(-1.11294e-09, -2.90499e-07, -7.23588e-08)
+bones/97/rotation = Quaternion(0.119952, 0.0183036, -0.00162305, 0.99261)
+bones/100/rotation = Quaternion(-0.695283, -0.0259918, -0.0268322, 0.717765)
+bones/102/rotation = Quaternion(0.201596, 0.0367892, -0.00648822, 0.978756)
+bones/103/rotation = Quaternion(-0.094857, 4.71727e-09, -2.54385e-08, 0.995491)
+bones/104/rotation = Quaternion(-0.0936467, 0.0371925, -0.0035008, 0.994904)
+bones/105/rotation = Quaternion(-0.69645, 0.0260354, 0.0267899, 0.716633)
+bones/107/rotation = Quaternion(-0.799881, 0.029902, 0.0223923, 0.598995)
+bones/108/rotation = Quaternion(0.707107, 0, 0, 0.707107)
+bones/111/rotation = Quaternion(-2.6825e-07, 6.9036e-09, -6.52179e-09, 1)
+bones/116/rotation = Quaternion(-0.477735, 0.690708, -0.314402, 0.442542)
+bones/116/scale = Vector3(0.993998, 0.993999, 0.993999)
+bones/117/rotation = Quaternion(0.433891, -2.27205e-06, 9.48893e-07, 0.900965)
+bones/117/scale = Vector3(0.997161, 0.997161, 0.997161)
+bones/118/rotation = Quaternion(-0.21167, -0.0273934, -0.0222287, 0.976704)
+bones/118/scale = Vector3(1.00929, 1.00929, 1.00929)
+bones/121/scale = Vector3(1.00929, 1.00929, 1.00929)
+bones/123/rotation = Quaternion(1.95393e-07, -0.0138571, 7.89877e-08, 0.999904)
+bones/123/scale = Vector3(1.00929, 1.00929, 1.00929)
+bones/125/scale = Vector3(1.00604, 1.00604, 1.00604)
+bones/126/rotation = Quaternion(1.63406e-07, -0.0901815, -4.3554e-08, 0.995925)
+bones/126/scale = Vector3(1.00604, 1.00604, 1.00604)
+bones/127/position = Vector3(5.77113e-05, -0.00405577, -0.000767098)
+bones/135/rotation = Quaternion(0.117794, 0.736133, -0.645699, 0.165247)
+bones/136/rotation = Quaternion(-0.176593, 0.00530316, 0.000950613, 0.984269)
+bones/136/scale = Vector3(0.993999, 0.993999, 0.993999)
+bones/137/rotation = Quaternion(0.433891, -2.27346e-06, 9.48189e-07, 0.900965)
+bones/137/scale = Vector3(0.997161, 0.997161, 0.997161)
+bones/138/rotation = Quaternion(-0.52463, 0.60445, -0.227691, 0.554581)
+bones/140/rotation = Quaternion(-0.525131, 0.604724, -0.227037, 0.554077)
+bones/140/scale = Vector3(1.00829, 0.983625, 1.00829)
+bones/141/rotation = Quaternion(0.00198838, 0.0813552, -8.55639e-06, 0.996683)
+bones/141/scale = Vector3(0.989577, 1.02118, 0.989577)
+bones/142/rotation = Quaternion(0.431223, 0.0817496, -0.0395493, 0.897663)
+bones/142/scale = Vector3(1.00666, 0.990755, 1.00268)
+bones/143/rotation = Quaternion(8.77513e-08, -0.0137213, 8.28629e-08, 0.999906)
+bones/144/rotation = Quaternion(-0.211969, -0.0139566, -0.0193084, 0.976986)
+bones/144/scale = Vector3(0.995471, 1.00692, 0.997702)
+bones/146/rotation = Quaternion(-0.367216, -0.69344, 0.418633, 0.457208)
+bones/146/scale = Vector3(0.993469, 0.993469, 0.993469)
+bones/147/rotation = Quaternion(0.43757, 2.27095e-06, -9.59525e-07, 0.899184)
+bones/147/scale = Vector3(0.996861, 0.996861, 0.996861)
+bones/148/rotation = Quaternion(-0.283042, -0.0206789, 0.0403883, 0.958034)
+bones/148/scale = Vector3(1.00963, 1.00963, 1.00963)
+bones/151/scale = Vector3(1.00963, 1.00963, 1.00963)
+bones/153/rotation = Quaternion(-1.76859e-07, -0.010601, 2.36255e-08, 0.999944)
+bones/153/scale = Vector3(1.00963, 1.00963, 1.00963)
+bones/155/scale = Vector3(1.00657, 1.00657, 1.00657)
+bones/156/rotation = Quaternion(1.16237e-07, 0.0882455, -4.20481e-08, 0.996099)
+bones/156/scale = Vector3(1.00657, 1.00657, 1.00657)
+bones/165/rotation = Quaternion(-0.196067, 0.657402, -0.721917, -0.0906442)
+bones/166/rotation = Quaternion(-0.177816, -0.00530197, -0.000957209, 0.984049)
+bones/166/scale = Vector3(0.993469, 0.993469, 0.993469)
+bones/167/rotation = Quaternion(0.43757, 2.27051e-06, -9.57964e-07, 0.899184)
+bones/167/scale = Vector3(0.996861, 0.996861, 0.996861)
+bones/168/rotation = Quaternion(-0.432082, -0.607168, 0.351292, 0.566785)
+bones/170/rotation = Quaternion(-0.432082, -0.607168, 0.351292, 0.566785)
+bones/170/scale = Vector3(1.00329, 0.993445, 1.00329)
+bones/171/rotation = Quaternion(6.65765e-08, -0.0790927, 6.08017e-08, 0.996867)
+bones/171/scale = Vector3(1, 1, 1)
+bones/172/rotation = Quaternion(0.435861, -0.079304, 0.0385953, 0.895682)
+bones/172/scale = Vector3(1.00155, 0.990856, 1.00771)
+bones/173/rotation = Quaternion(1.41385e-07, -0.0107368, 5.36241e-08, 0.999942)
+bones/174/rotation = Quaternion(-0.282588, -0.0104775, 0.0435412, 0.958196)
+bones/174/scale = Vector3(0.995297, 1.00545, 0.999366)
+bones/175/rotation = Quaternion(-5.15101e-08, 0.696936, 0.717133, -5.52541e-08)
+bones/179/rotation = Quaternion(-5.15101e-08, 0.696936, 0.717133, -5.52541e-08)
+bones/185/position = Vector3(-0.806235, 0.00344068, -1.05162)
+bones/185/rotation = Quaternion(0.147869, 0.6889, -0.702797, 0.0981258)
+bones/187/position = Vector3(1.50034, 2.68244, -1.20056)
+bones/187/rotation = Quaternion(-0.705133, -0.0527938, -0.0527938, 0.705133)
+bones/188/rotation = Quaternion(0.996586, -6.49754e-09, 0.0758791, -0.0325328)
+bones/190/position = Vector3(0.806235, 0.00344067, -1.05162)
+bones/190/rotation = Quaternion(0.147869, -0.6889, 0.702797, 0.0981259)
+bones/192/position = Vector3(-1.08124, 2.68244, -1.58959)
+bones/192/rotation = Quaternion(-0.705133, -0.0527938, -0.0527938, 0.705133)
+bones/193/rotation = Quaternion(0.996586, -1.21438e-09, -0.0758791, -0.0325328)
+bones/195/position = Vector3(0, 0.12954, 0)
+bones/202/rotation = Quaternion(0.875751, -0.000102014, 0.000185057, -0.482763)
+bones/205/rotation = Quaternion(-7.55124e-08, -8.79081e-18, 1, 2.25045e-15)
+bones/206/position = Vector3(0.323281, 1.01632, 1.41222)
+bones/206/rotation = Quaternion(-0.707107, 3.14019e-15, 6.9084e-15, 0.707107)
+bones/209/position = Vector3(0, 0.12954, 0)
+bones/216/rotation = Quaternion(0.875751, 0.000102014, -0.000185057, -0.482763)
+bones/219/rotation = Quaternion(7.54979e-08, -4.39456e-18, 1, -2.25001e-15)
+bones/220/position = Vector3(-0.323281, 1.01632, 1.41222)
+bones/220/rotation = Quaternion(-0.707107, 3.14019e-15, 6.9084e-15, 0.707107)
+
+[node name="fpsPivot" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.564265)
+
+[node name="CameraFPS" type="Camera3D" parent="VisualRoot/fpsPivot"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.913903, 0.0438706)
+cull_mask = 1048571
+projection = 2
+size = 0.03
+
+[node name="QuadOutline" type="MeshInstance3D" parent="VisualRoot/fpsPivot/CameraFPS"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33227e-15, 0, -1.01177)
+mesh = SubResource("QuadMesh_rld3q")
+
+[node name="cameraMesh" parent="VisualRoot/fpsPivot/CameraFPS" instance=ExtResource("6_qid6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0430757, 0.0192441, -0.523721)
+
+[node name="camera" parent="VisualRoot/fpsPivot/CameraFPS/cameraMesh" index="0"]
+layers = 2
+surface_material_override/0 = SubResource("ShaderMaterial_u51o7")
+surface_material_override/3 = SubResource("StandardMaterial3D_rld3q")
+
+[node name="camera_front" parent="VisualRoot/fpsPivot/CameraFPS/cameraMesh" index="1"]
+visible = false
+
+[node name="camera_dial" parent="VisualRoot/fpsPivot/CameraFPS/cameraMesh" index="2"]
+layers = 2
+
+[node name="cameraAnim" type="AnimationPlayer" parent="VisualRoot/fpsPivot/CameraFPS/cameraMesh"]
+libraries = {
+&"": SubResource("AnimationLibrary_kn408")
+}
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="VisualRoot"]
+transform = Transform3D(-0.468309, -0.16979, 0.0370182, 0.172202, -0.467871, 0.00584003, 0.0323177, 0.0134025, 0.500779, -0.505477, 0.609355, -0.00321262)
+bone_name = "DEF-hand.R"
+bone_idx = 174
+use_external_skeleton = true
+external_skeleton = NodePath("../GodotPlushSkin/player2/Rig/Skeleton3D")
+
+[node name="camera_tps" parent="VisualRoot/BoneAttachment3D" instance=ExtResource("6_qid6b")]
+transform = Transform3D(-1.88184, 0.644925, 0.208544, 0.570009, 1.8299, -0.556335, -0.373459, -0.476282, -1.9107, 0.156591, 0.490911, 0.145479)
+visible = false
+
+[node name="camera" parent="VisualRoot/BoneAttachment3D/camera_tps" index="0"]
+layers = 4
+
+[node name="camera_front" parent="VisualRoot/BoneAttachment3D/camera_tps" index="1"]
+layers = 4
+
+[node name="camera_dial" parent="VisualRoot/BoneAttachment3D/camera_tps" index="2"]
+layers = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_xhngq")
+
+[node name="OrbitView" parent="." instance=ExtResource("3_hcr6r")]
+
+[node name="MovementDust" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = ExtResource("4_j7qt1")
+cast_shadow = 0
+lifetime = 0.8
+process_material = SubResource("ParticleProcessMaterial_dhnoe")
+draw_pass_1 = SubResource("QuadMesh_bw4i7")
+
+[node name="Bubbles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.41533, 0)
+visible = false
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_eda2r")
+draw_pass_1 = SubResource("SphereMesh_rh4d6")
+
+[node name="FootStepAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_sxclc")
+max_polyphony = 3
+
+[node name="ImpactAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_3vpnr")
+volume_db = 5.0
+max_polyphony = 3
+
+[node name="WaveAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_fvg16")
+
+[node name="CrankAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("13_8wi6f")
+volume_db = 5.0
+max_polyphony = 3
+
+[node name="ShutterAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("14_rld3q")
+volume_db = 5.0
+max_polyphony = 3
+
+[node name="EmptyAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("15_rld3q")
+max_polyphony = 3
+
+[node name="JumpAudio" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("16_lsf5j")
+volume_db = -6.0
+max_db = -6.0
+max_polyphony = 3
+
+[node name="ShutterTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+
+[node name="ShutterDelay" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="tps" type="Control" parent="UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Battery" type="TextureRect" parent="UI/tps"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 773.0
+offset_top = 491.0
+offset_right = 901.0
+offset_bottom = 619.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.67, 0.67)
+texture = ExtResource("16_1piu6")
+
+[node name="fps" type="Control" parent="UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FadeOut" type="ColorRect" parent="UI"]
+visible = false
+modulate = Color(0, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LevelSwitch" type="Timer" parent="UI"]
+wait_time = 2.0
+one_shot = true
+
+[node name="PauseMenu" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.593134, 0.593134, 0.593133, 1)
+
+[node name="Label" type="Label" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -24.5
+offset_right = 32.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "depth
+mapped"
+label_settings = SubResource("LabelSettings_wqewt")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -169.0
+offset_top = 193.0
+offset_right = 170.0
+offset_bottom = 241.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "[e]"
+label_settings = SubResource("LabelSettings_8pvca")
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -459.0
+offset_top = -297.0
+offset_right = -120.0
+offset_bottom = -249.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "[esc] QUIT"
+label_settings = SubResource("LabelSettings_gs5xy")
+horizontal_alignment = 1
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_1piu6")
+volume_db = -30.0
+
+[connection signal="timeout" from="ShutterTimer" to="." method="_on_shutter_timer_timeout"]
+[connection signal="timeout" from="ShutterDelay" to="." method="_on_shutter_delay_timeout"]
+[connection signal="timeout" from="UI/LevelSwitch" to="." method="_on_level_switch_timeout"]
+
+[editable path="VisualRoot/GodotPlushSkin"]
+[editable path="VisualRoot/GodotPlushSkin/GodotPlushModel"]
+[editable path="VisualRoot/GodotPlushSkin/player2"]
+[editable path="VisualRoot/fpsPivot/CameraFPS/cameraMesh"]
+[editable path="VisualRoot/BoneAttachment3D/camera_tps"]
+[editable path="OrbitView"]

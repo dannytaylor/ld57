@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://benxyve2a8n5y"]
+
+[ext_resource type="Script" uid="uid://wiibmiovcfx8" path="res://components/battery/battery.gd" id="1_abt3i"]
+[ext_resource type="ArrayMesh" uid="uid://bsxkloug4oex1" path="res://assets/materials/battery_mesh.tres" id="2_nrjf4"]
+[ext_resource type="AudioStream" uid="uid://c0krqxs3j24l2" path="res://components/battery/powerUp.wav" id="3_nrjf4"]
+
+[sub_resource type="Animation" id="Animation_ojcqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0.523599)]
+}
+
+[sub_resource type="Animation" id="Animation_nrjf4"]
+resource_name = "spin"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.523599), Vector3(0, 6.28319, 0.523599)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jh5oo"]
+_data = {
+&"RESET": SubResource("Animation_ojcqv"),
+&"spin": SubResource("Animation_nrjf4")
+}
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_abt3i"]
+radius = 1.0877
+height = 2.93179
+
+[node name="battery" type="Node3D"]
+script = ExtResource("1_abt3i")
+colour = Color(1, 1, 1, 1)
+
+[node name="mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("2_nrjf4")
+skeleton = NodePath("")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="mesh"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_jh5oo")
+}
+autoplay = "spin"
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_abt3i")
+
+[node name="sfx" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_nrjf4")
+volume_db = -6.0
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

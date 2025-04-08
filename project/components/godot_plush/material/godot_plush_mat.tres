@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://buh6uaww5rtsq"]
+
+[ext_resource type="Shader" uid="uid://dhkgcxxo8ja7b" path="res://components/godot_plush/material/godot_plush.gdshader" id="1_jpm0u"]
+[ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://components/godot_plush/material/godot_plush_albedo.png" id="2_532ik"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_jpm0u")
+shader_parameter/albedo_texture = ExtResource("2_532ik")
+shader_parameter/uv_offset = Vector2(0, 0)

@@ -13,3 +13,11 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+project/addons/
+
+*.import
+
+project/assets/2d/honeyblot_caps.ttf
+
+release/
