@@ -14,6 +14,8 @@ const MAT_RIGID = preload("res://assets/materials/mat_rigid.tres")
 @onready var stat = $StaticBody3D
 #@onready var rigd = $RigidBody3D
 @onready var fog = $FogVolume
+@onready var mesh_z = $MeshZ
+var meshz_mat : Material
 
 
 @export var active_threshold : float = 0.6
@@ -24,10 +26,15 @@ func _ready():
 	#mat_dither = mesh.get_active_material(0).duplicate()
 	#rigd.mass = 4.0 * scale.length()
 	
+	meshz_mat = mesh_z.get_active_material(0).duplicate()
+	mesh_z.set_surface_override_material(0,meshz_mat)
+
+	
 	if default_active:
 		if default_type == 'static':
 			mesh.set_surface_override_material(0,MAT_STATIC)
 			stat.set_collision_layer_value(1,default_active)
+			stat.set_collision_mask_value(1,default_active)
 		elif default_type == 'gravity':
 			mesh.set_surface_override_material(0,MAT_RIPPLES)
 			area.monitoring = default_active
@@ -45,9 +52,10 @@ func set_interactive(depth,zoom,battery_type):
 	
 	var check = depth/zoom
 	if check < active_threshold:
-		disable_active()
+		disable_active() # reset before setting
 		if battery_type == 'static':
 			stat.set_collision_layer_value(1,true)
+			stat.set_collision_mask_value(1,true)
 			mesh.set_surface_override_material(0,MAT_STATIC)
 		elif battery_type == 'gravity':
 			area.monitoring = true
@@ -58,9 +66,16 @@ func set_interactive(depth,zoom,battery_type):
 			mesh.set_surface_override_material(0,MAT_RIGID)
 	else:
 		disable(depth,zoom)
-
+	
+func check_zoom(alph):
+	if alph < active_threshold:
+		meshz_mat.set_shader_parameter("alph",1.0)
+	else:
+		meshz_mat.set_shader_parameter("alph",0.1)
+		
 func disable_active():
 	stat.set_collision_layer_value(1,false)
+	stat.set_collision_mask_value(1,false)
 	area.monitoring = false
 	fog.visible = false
 	#rigd.set_collision_layer_value(1,false)
@@ -73,8 +88,6 @@ func disable(_depth,_zoom):
 	#var new_color = Color(1.0,1.0,1.0, alp)
 	#mat_dither.set_shader_parameter("color",new_color)
 	
-
-
 func _on_area_3d_body_entered(body):
 	if body.is_in_group("player"):
 		var player = body

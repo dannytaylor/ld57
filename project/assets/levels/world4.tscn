@@ -2029,7 +2029,7 @@ size = Vector3(2, 2, 2)
 [node name="World2" type="Node3D"]
 
 [node name="CyclopsBlocks" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -8, 0)
 script = ExtResource("1_kgio0")
 metadata/_custom_type_script = "uid://bau208ykmur1r"
 
@@ -2112,20 +2112,20 @@ script = ExtResource("2_hwiqd")
 mesh_vector_data = SubResource("Resource_77no4")
 
 [node name="door" parent="." instance=ExtResource("8_r32l2")]
-transform = Transform3D(-3.58433e-08, 0, -0.82, 0, 0.82, 0, 0.82, 0, -3.58433e-08, 22.0748, 0, 0)
+transform = Transform3D(-3.58433e-08, 0, -0.82, 0, 0.82, 0, 0.82, 0, -3.58433e-08, 26.0748, 0, 0)
 next_scene = 4
 
 [node name="battery" parent="." instance=ExtResource("9_d4dnc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0704, -7, 0.00877762)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.59321, -7, -7.47245)
 battery_type = "gravity"
 colour = Color(0.308063, 0.492545, 1, 1)
 
 [node name="Interactable" parent="." instance=ExtResource("10_2hekd")]
-transform = Transform3D(3, 0, 0, 0, 11.88, 0, 0, 0, 29, 16, -5.953, 0)
+transform = Transform3D(3, 0, 0, 0, 11.88, 0, 0, 0, 29, 20, -5.953, 0)
 active_threshold = 0.5
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.83692, -6.61242, -12.1267)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 5.83692, -6.61242, -12.1267)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_2phkt")
@@ -2135,7 +2135,7 @@ mesh = SubResource("BoxMesh_37d5m")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12639, -3.61051, -12.9672)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.12639, -3.61051, -12.9672)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
 shape = SubResource("BoxShape3D_2phkt")
@@ -2145,12 +2145,12 @@ mesh = SubResource("BoxMesh_37d5m")
 skeleton = NodePath("../..")
 
 [node name="Interactable2" parent="." instance=ExtResource("10_2hekd")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 1.88136, -6.50923, 12.0485)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 5.88136, -6.50923, 12.0485)
 active_threshold = 0.5
 
 [node name="npc4" parent="." instance=ExtResource("12_hwiqd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.07795, -1.9768, -8.22843)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.92205, -1.9768, -8.22843)
 
 [node name="battery2" parent="." instance=ExtResource("9_d4dnc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1463, -1.25736, 5.68681)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8537, -1.25736, 5.68681)
 colour = Color(0.742644, 0.458892, 0.178334, 1)

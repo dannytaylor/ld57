@@ -1,8 +1,10 @@
 extends RigidBody3D
 
 #debug
-var DEBUG : bool = false
+var DEBUG : bool = true
 var has_camera : bool = true if DEBUG else false
+var debug_world = 3
+
 @onready var camera_tps_mesh = $VisualRoot/BoneAttachment3D/camera_tps
 @onready var pause_menu = $UI/PauseMenu
 
@@ -23,7 +25,7 @@ var in_water : bool = false
 @export var base_speed = 0.5
 @export var run_speed = 10.0
 @export var speed : float = 0.0
-@export var speed_lerp : float = 0.1
+@export var speed_lerp : float = 0.06
 
 @onready var visual_root = %VisualRoot
 @onready var godot_plush_skin = $VisualRoot/GodotPlushSkin
@@ -69,7 +71,7 @@ var fps_mode : bool = false
 var fps_zoom : float = 24
 var fps_zoom_STEP : float = 8
 var fps_zoom_MIN : float = 8
-var fps_zoom_MAX : float = 40
+var fps_zoom_MAX : float = 48
 var fps_SENSE = 0.002
 var fps_ROT_RESET : Vector3
 
@@ -91,8 +93,10 @@ var batteries = []
 # This code is not optimal; perhaps “move_and_collide” should be used to check is_on_floor.
 
 func _ready():
-	#get_parent().new_world(0)
-	#if !DEBUG: music.play()
+	
+	if DEBUG: 
+		#music.play()
+		camera_tps_mesh.visible = true
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_tps.current = true
@@ -139,7 +143,8 @@ func _unhandled_input(event):
 						crank_audio.play()
 					else:
 						empty_audio.play()
-					print(fps_zoom)
+					camera_zoom()
+					#print(fps_zoom)
 					
 				if event.is_action_pressed("q",true):
 					if fps_zoom > fps_zoom_MIN:
@@ -149,7 +154,8 @@ func _unhandled_input(event):
 						crank_audio.play()
 					else:
 						empty_audio.play()
-					print(fps_zoom)
+					camera_zoom()
+					#print(fps_zoom)
 					
 				if event.is_action_pressed("shoot",true):
 					if len(batteries)>0:
@@ -169,9 +175,13 @@ func _unhandled_input(event):
 					ui_fps.visible = fps_mode
 					ui_tps.visible = !fps_mode
 					# switching to 1st p
+					
+					#switching to 1st p
 					if fps_mode:
+						camera_zoom()
 						camera_fps.current = fps_mode
 						fps_pivot.rotation = Vector3.ZERO
+						fps_pivot.global_rotation.y = orbit_view.global_rotation.y - PI
 						camera_fps.rotation = Vector3.UP*PI
 						#fps_pivot.rotation.y += orbit_view.rotation.y + PI/2
 					
@@ -197,13 +207,16 @@ func _process(delta):
 	if !_is_on_floor and coyote > 0.0:
 		coyote -= delta
 
+	if DEBUG and debug_world:
+		get_parent().new_world(debug_world)
+		debug_world = false
 			
 
 func _integrate_forces(state : PhysicsDirectBodyState3D):
 	if !pause_menu.visible:
 		var camera : Camera3D = get_viewport().get_camera_3d()
 		if camera == null: return
-		var is_waving : bool = godot_plush_skin.is_waving()
+		#var is_waving : bool = godot_plush_skin.is_waving()
 		if !fps_mode and !action_lock:
 			movement_input = Input.get_vector("left", "right", "up", "down").rotated(-camera.global_rotation.y)		
 		else:
@@ -216,7 +229,7 @@ func _integrate_forces(state : PhysicsDirectBodyState3D):
 			var walk_dir = position.direction_to(walk_target)
 			movement_input = Vector2(walk_dir.x,walk_dir.z)
 		var vel_2d = Vector2(state.linear_velocity.x, state.linear_velocity.z)
-		var is_moving : bool = movement_input != Vector2.ZERO && !is_waving
+		var is_moving : bool = movement_input != Vector2.ZERO
 
 		if is_moving and !fps_mode:
 			godot_plush_skin.set_state("run" if is_running else "walk")
@@ -241,8 +254,6 @@ func _integrate_forces(state : PhysicsDirectBodyState3D):
 		# Check jump and fall 
 		if _is_on_floor or double_jump:
 			if Input.is_action_just_pressed("space"):
-				
-				
 				var jump_particles = JUMP_PARTICLES_SCENE.instantiate()
 				add_sibling(jump_particles)
 				jump_particles.global_transform = global_transform
@@ -253,16 +264,15 @@ func _integrate_forces(state : PhysicsDirectBodyState3D):
 				if !_is_on_floor && double_jump:
 					if !(coyote > 0):
 						double_jump = false
-					# double jump anim here
-					# jump
+						godot_plush_skin.set_state("jump",true)
+						state.linear_velocity.y = -jump_velocity
+					
 				else:
 					godot_plush_skin.set_state("jump")
-				state.linear_velocity.y = -jump_velocity
+					state.linear_velocity.y = -jump_velocity
 
 				do_squash_and_stretch(1.2, 0.1)
 				
-			if _is_on_floor:
-				double_jump = true 
 		else:
 			godot_plush_skin.set_state("fall")
 
@@ -270,15 +280,15 @@ func _integrate_forces(state : PhysicsDirectBodyState3D):
 		physics_material_override.friction = 0.0 if is_moving else 0.8
 
 		# Add air damp when not moving
-		if !_is_on_floor && !is_moving:
-			vel_2d = vel_2d.move_toward(Vector2.ZERO, base_speed * state.step)
-			linear_velocity.x = vel_2d.x
-			linear_velocity.z = vel_2d.y
+		#if !_is_on_floor && !is_moving:
+			#vel_2d = vel_2d.move_toward(Vector2.ZERO, base_speed * state.step)
+			#linear_velocity.x = lerp(linear_velocity.x,vel_2d.x,0.01)
+			#linear_velocity.z = lerp(linear_velocity.z,vel_2d.y,0.01)
 
 		# Add gravity
 		var gravity = jump_gravity if state.linear_velocity.y > 0.0 else fall_gravity
 		if in_water: 
-			gravity = gravity/2.0
+			gravity = gravity/2.5
 			bubbles.visible = true
 		else:
 			bubbles.visible = false
@@ -294,7 +304,9 @@ func _integrate_forces(state : PhysicsDirectBodyState3D):
 func _get_is_on_floor(state : PhysicsDirectBodyState3D) -> bool:
 	for col_idx in state.get_contact_count():
 		var col_normal = state.get_contact_local_normal(col_idx)
-		return col_normal.dot(Vector3.UP) > -0.5
+		print(col_normal.y)
+		if col_normal.y > 0.2: 
+			return col_normal.dot(Vector3.UP) > -0.5  
 	return false
 
 func _on_hit_floor(y_vel : float):
@@ -306,6 +318,7 @@ func _on_hit_floor(y_vel : float):
 	add_sibling(land_particles)
 	land_particles.global_transform = global_transform
 	do_squash_and_stretch(0.7, 0.08)
+	double_jump = true 
 
 func do_squash_and_stretch(value : float, timing : float = 0.1):
 	var t = create_tween()
@@ -324,13 +337,20 @@ func camera_interact(battery_type):
 		else:
 			i.disable(depth,fps_zoom)
 
+func camera_zoom():
+	var interactables = get_tree().get_nodes_in_group("interactable")
+	for i in interactables:
+		var depth = position.distance_to(i.position)
+		i.check_zoom(depth/fps_zoom)
+
+
 func _on_shutter_timer_timeout():
 	camera_tps.current = !fps_mode
 	ui_fps.visible = fps_mode
 	ui_tps.visible = !fps_mode
 	
 	orbit_view.rotation.x = -PI/6
-	orbit_view.rotation.y = fps_pivot.global_rotation.y - PI
+	orbit_view.global_rotation.y = fps_pivot.global_rotation.y - PI
 
 func _on_shutter_delay_timeout():
 	fps_mode = false

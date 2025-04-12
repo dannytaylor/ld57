@@ -9,6 +9,8 @@ extends Node3D
 @onready var w7 = preload("res://assets/levels/world7.tscn")
 @onready var w8 = preload("res://assets/levels/world8.tscn")
 
+@onready var w9 = preload("res://assets/levels/world9.tscn")
+
 var worlds = []
 var current_world
 
@@ -18,6 +20,7 @@ func _ready():
 	add_child(current_world)
 
 func new_world(scene_number):
-	current_world.queue_free()
+	if current_world:
+		current_world.queue_free()
 	current_world = worlds[scene_number].instantiate()
 	add_child(current_world)

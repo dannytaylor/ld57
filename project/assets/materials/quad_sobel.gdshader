@@ -90,10 +90,10 @@ float edge_value_depth(sampler2D depth_tex, vec2 uv, vec2 pixel_size, mat3 sobel
 	return abs(output);
 }
 
-// Attaches the mesh to the camera. Black magic, idk.
-void vertex() {
-	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
-}
+//// Attaches the mesh to the camera. Black magic, idk.
+//void vertex() {
+	//POSITION = vec4(VERTEX.xy, 1.0, 1.0);
+//}
 
 void fragment() {
 	vec2 pixel_size = vec2(1.0) / VIEWPORT_SIZE;

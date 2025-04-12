@@ -8,3 +8,4 @@ cull_mode = 2
 albedo_texture = ExtResource("1_28blg")
 metallic = 0.5
 roughness = 0.5
+distance_fade_mode = 1

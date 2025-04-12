@@ -35,16 +35,20 @@ func _set_tilt(value : float) -> void:
 	animation_tree2.set("parameters/AddTilt/add_amount", abs(tilt))
 	animation_tree2.set("parameters/TiltAmount/blend_position", tilt)
 
-func set_state(state_name : String) -> void:
-	state_machine.travel(state_name)
-	state_machine2.travel(state_name)
+func set_state(state_name : String,insta : bool = false) -> void:
+	if insta:
+		state_machine.start(state_name)
+		state_machine2.start(state_name)
+	else:
+		state_machine.travel(state_name)
+		state_machine2.travel(state_name)
 
-# N/A
-func wave() -> void:
-	waved.emit()
-	animation_tree.set("parameters/WaveOneShot/request", true)
-func is_waving() -> bool:
-	return animation_tree.get("parameters/WaveOneShot/active")
+## N/A
+#func wave() -> void:
+	#waved.emit()
+	#animation_tree.set("parameters/WaveOneShot/request", true)
+#func is_waving() -> bool:
+	#return animation_tree.get("parameters/WaveOneShot/active")
 
 func _set_squash_and_stretch(value : float) -> void:
 	squash_and_stretch = value

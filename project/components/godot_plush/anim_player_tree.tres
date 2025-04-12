@@ -139,12 +139,11 @@ animation = &"walk"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sju7a"]
-xfade_time = 0.4
+xfade_time = 0.1
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qib5w"]
-xfade_time = 0.1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k1efj"]
 xfade_time = 0.2
@@ -162,7 +161,7 @@ xfade_time = 0.2
 xfade_time = 0.1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rjms8"]
-xfade_time = 0.1
+xfade_time = 0.2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dmtsr"]
 xfade_time = 0.2
@@ -218,7 +217,7 @@ nodes/StateMachine2/position = Vector2(-540, 40)
 nodes/StateMachine3/node = SubResource("AnimationNodeStateMachine_3yy31")
 nodes/StateMachine3/position = Vector2(-200, 20)
 nodes/TiltAmount/node = SubResource("AnimationNodeBlendSpace1D_77qy1")
-nodes/TiltAmount/position = Vector2(-60, 280)
+nodes/TiltAmount/position = Vector2(-100, 300)
 nodes/WaveOneShot/node = SubResource("AnimationNodeOneShot_7c017")
 nodes/WaveOneShot/position = Vector2(-260, 300)
 nodes/output/position = Vector2(520, 140)

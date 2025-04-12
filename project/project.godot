@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="depth mapped"
+config/name="ld57"
 run/main_scene="uid://c24cvv5k15c3l"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0.10161, 0.10161, 0.10161, 1)

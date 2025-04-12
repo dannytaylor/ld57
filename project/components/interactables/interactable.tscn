@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://boj1te0fc6q8"]
+[gd_scene load_steps=8 format=3 uid="uid://boj1te0fc6q8"]
 
 [ext_resource type="Script" uid="uid://dlacrxa3v00kf" path="res://components/interactables/interactable.gd" id="1_d6418"]
+[ext_resource type="Shader" uid="uid://h2xt77jmh2m6" path="res://assets/materials/spatial_dither.gdshader" id="2_7ng0s"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_35n4a"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cng86"]
+render_priority = 0
+shader = ExtResource("2_7ng0s")
+shader_parameter/color = Color(1, 1, 1, 0.501961)
+shader_parameter/alph = 0.1
+
 [sub_resource type="BoxMesh" id="BoxMesh_d6418"]
+material = SubResource("ShaderMaterial_cng86")
 
 [sub_resource type="FogMaterial" id="FogMaterial_0oysh"]
 density = 0.1
@@ -17,7 +25,7 @@ edge_fade = 0.0615573
 script = ExtResource("1_d6418")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-layers = 5
+layers = 4
 mesh = SubResource("BoxMesh_35n4a")
 
 [node name="MeshZ" type="MeshInstance3D" parent="."]
@@ -40,6 +48,7 @@ shape = SubResource("BoxShape3D_hhshn")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 collision_layer = 0
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_hhshn")
